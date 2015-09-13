@@ -17,11 +17,15 @@
 
  ![WorkFlow Diagram](https://raw.githubusercontent.com/saptarshineilsinha/SSAOParameterAnalysis/master/doc/ParameterAnalysisWorkFlow.PNG)
 
- ## Brief Overview of the Project
+ ## Brief Description of the Framework
 
- The main SSAO algorithms is contained in the sub-project "SSAOParameterAnalysis\sponza1\public\scripts\ssao_cleanedCode". This project contains ssao shaders for Crytek , StarCraft II ,Horizon Based Ambient Occlusion,Alchemy AO, Scalable ambient occlusion and Volumetric AO.
- The pipeline sets the ssao-pass to the desired algorithm and currently we output the ssao with desired blur to rendered target for parameter analysis. The project also contains three kinds of Blur passes (Box Blur,Gaussian Blur and the Bilateral Filter).
- Our goal is to find the best algorithm with the correct set of parameters for a particular scene. Finally we can generalize to get the best algorithm and parameters for a particular scene.
+ The SSAO algorithms are contained in the sub-project SSAOParameterAnalysis\sponza1\public\scripts\ssao_cleanedCode .
+ This project contains ssao shaders for Crytek , StarCraft II ,Horizon Based Ambient Occlusion,Alchemy AO, Scalable ambient occlusion and Volumetric AO.
+ The pipeline sets the ssao-pass to the desired algorithm and currently we output the ssao with desired blur to rendered target for parameter analysis.
+ The sub-project also contains three kinds of Blur passes (Box Blur,Gaussian Blur and the Bilateral Filter).
+ The xml3D exporter is used to get the xml3D files (html and javascript) for a particular model (.blend file)
+ Our goal is to find the best algorithm with the correct set of parameters for a particular scene.
+ Finally we can generalize to get the best algorithm and parameters for a particular scene.
  This give us the best algorithm based on visual perception that can be used for a particular scene.
 
 
