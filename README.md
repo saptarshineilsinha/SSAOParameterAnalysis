@@ -19,7 +19,8 @@
 
  ## Brief Description of the Framework
 
- The SSAO algorithms are contained in the sub-project SSAOParameterAnalysis\sponza1\public\scripts\ssao_cleanedCode .
+ The SSAO algorithms are contained in the sub-project:
+ SSAOParameterAnalysis\sponza1\public\scripts\ssao_cleanedCode.
  This project contains ssao shaders for Crytek , StarCraft II ,Horizon Based Ambient Occlusion,Alchemy AO, Scalable ambient occlusion and Volumetric AO.
  The pipeline sets the ssao-pass to the desired algorithm and currently we output the ssao with desired blur to rendered target for parameter analysis.
  The sub-project also contains three kinds of Blur passes (Box Blur,Gaussian Blur and the Bilateral Filter).
