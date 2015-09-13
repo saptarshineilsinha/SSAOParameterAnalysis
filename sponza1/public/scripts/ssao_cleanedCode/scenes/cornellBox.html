@@ -16,8 +16,7 @@
     <script type="text/javascript" src="../pipelines/passes/bialteralBlurPass.js"></script>
     <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/DepthShader.js"></script>
     <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/renderNormalViewSpace.js"></script>
-
-    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/crysis.js"></script>
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/hbao.js"></script>
     <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/passes/ssaopass.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -25,31 +24,32 @@
                 orientation: "horizontal",
                 range: "min"
             });
-            $("#slider_radius_starcraft").slider({min: 0.0, max: 5.0, value:3.5, step: 0.01,
+            $("#slider_radius_hbao").slider({min: 0.0, max: 3.0, value: 0.9, step: 0.1,
                 slide: function (event, ui) {
-                    window.starcraft_radius = ui.value;
-                    $('#value_radius_starcraft').text(ui.value);
+                    window.radius_hbao = ui.value;
+                    $('#value_radius').text(ui.value);
                     var xml3dElement1 = document.getElementById("myXML3D");
                     xml3dElement1.getRenderInterface().context.requestRedraw();
                 }});
-            $("#slider_falloff").slider({min: 0.0, max: 0.1, value: 0.01, step: 0.001,
+            $("#slider_angleBias").slider({min: 0.0, max: 1.0, value: 0.3, step: 0.01,
                 slide: function (event, ui) {
-                    window.falloff = ui.value;
-                    $('#value_falloff').text(ui.value);
+                    window.angleBias = ui.value;
+                    $('#value_angleBias').text(ui.value);
                     var xml3dElement1 = document.getElementById("myXML3D");
                     xml3dElement1.getRenderInterface().context.requestRedraw();
                 }});
-            window.starcraft_radius=$('#slider_radius_starcraft').slider("value");
-            window.falloff = $('#slider_falloff').slider("value");
-            $('#value_radius_starcraft').text($('#slider_radius_starcraft').slider("value"));
-            $('#value_falloff').text($('#slider_falloff').slider("value"));
+            window.radius_hbao=$('#slider_radius_hbao').slider("value");
+            window.angleBias = $('#slider_angleBias').slider("value");
+            $('#value_radius').text($('#slider_radius_hbao').slider("value"));
+            $('#value_angleBias').text($('#slider_angleBias').slider("value"));
+
         });
-        window.ssao_type = "crysis";
-        window.renderNormal="render-normal";
-        window.onlyAO=false;
+        window.ssao_type = "hbao";
+        window.renderNormal="render-normalViewSpace";
+        window.onlyAO=true;
     </script>
-    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/pipelineEnableOnlyAO.js"></script>
-    <title>StarCraftII SSAO Implementation of Cornell box</title>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/pipelineAutomaticParameters.js"></script>
+    <title>Hbao  Implementation of Cornell box</title>
 </head>
 <body>
 
@@ -83,20 +83,19 @@
         <light shader="#ls"></light>
     </group>
 </xml3d>
-<label><b> SSAO-StarCraft II Parameters </b></label>
+<label><b> SSAO-HBAO Parameters </b></label>
 <div class="controls">
     <div class="option">
-        <label>Radius StarCraft II</label>
-        <div id="slider_radius_starcraft" class="slider">
+        <label>Radius Hbao</label>
+        <div id="slider_radius_hbao" class="slider">
         </div>
-        <span id="value_radius_starcraft"></span>
-
+        <span id="value_radius"></span>
         <div class="option">
-        </div> <label>Falloff</label>
-        <div id="slider_falloff" class="slider"></div>
-        <span id="value_falloff"></span>
-
+        </div> <label>Angle Bias</label>
+        <div id="slider_angleBias" class="slider"></div>
+        <span id="value_angleBias"></span>
     </div>
 </div>
+
 </body>
 </html>
