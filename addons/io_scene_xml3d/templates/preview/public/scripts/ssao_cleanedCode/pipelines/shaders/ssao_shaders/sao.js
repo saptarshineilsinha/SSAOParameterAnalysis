@@ -17,8 +17,8 @@ XML3D.shaders.register("sao", {
         "uniform sampler2D sNormalTex,sPositionTex;",
         "uniform vec2 uRandomTexSize;",
         "uniform sampler2D sRandomNormals;",
-        "uniform float radius_sao,fieldOfView;",
-        "uniform float near, far,epsilon_sao;",
+        "uniform float radius_sao,bias_sao,epsilon_sao,intensity_sao;",
+        "uniform float near, far;",
         "uniform vec3 worldPosition;",
         "uniform sampler2D sDepthTexture;",
         "uniform mat4 inverseProjectionMatrix,projectionMatrix,viewMatrix,inverseViewMatrix;",
@@ -26,7 +26,7 @@ XML3D.shaders.register("sao", {
 
         "const int NUM_SAMPLES = 16;",
         "const int NUM_SPIRAL_TURNS = 5;",
-        "#define VARIATION 1",
+        "#define VARIATION 3",
 
 
         "vec3 getPositionViewSpace(vec2 texCoordinate) {",
@@ -61,20 +61,20 @@ XML3D.shaders.register("sao", {
         "float vv = dot(v, v);",
         "float vn = dot(v, normalVS);",
 
-        "#if VARIATION == 0",
-        "return float(vv < radius2) * max(vn / (epsilon_sao + vv), 0.0);",
+        "#if VARIATION == 1",
+        "return float(vv < radius2) * (max((vn-bias_sao) / (epsilon_sao + vv), 0.0))*radius2*0.6;",
 
         "#elif VARIATION == 1 ",
-        "float f = max(radius2 - vv, 0.0) / radius2;",
-        "return f * f * f * max(vn / (epsilon_sao + vv), 0.0);",
+        "float f = max(radius2 - vv, 0.0)/radius2;",
+        "return intensity_sao*f * f * f * max((vn-bias_sao) / (epsilon_sao + vv), 0.0);",
 
         "#elif VARIATION == 2",
         "float invRadius2 = 1.0 / radius2;",
-        "return 4.0 * max(1.0 - vv * invRadius2, 0.0) * max(vn, 0.0);",
+        "return 4.0 * max(1.0 - vv * invRadius2, 0.0) * max(vn-bias_sao, 0.0);",
 
 
         "#else",
-        "return 2.0 * float(vv < radius2) * max(vn, 0.0);",
+        "return 2.0 * float(vv < radius2) * max(vn-bias_sao, 0.0);",
 
         "#endif",
         "}",
@@ -93,7 +93,7 @@ XML3D.shaders.register("sao", {
 
         "float projScale = 60.0;",
         "radiusWS = radius_sao;",
-        "radiusSS =projScale*radiusWS/originVS.z;",
+        "radiusSS =projScale*radius_sao/originVS.z;",
 
         "for (int i = 0; i < NUM_SAMPLES; ++i) {",
         "ao += sampleAO(uv, originVS, normalVS, radiusSS, i, randomPatternRotationAngle);",
@@ -110,6 +110,7 @@ XML3D.shaders.register("sao", {
         radius_sao: 1.3,
         far: 10000,
         near: 0.1,
+        bias_sao:0.1,
         epsilon_sao: 0.001
     },
 

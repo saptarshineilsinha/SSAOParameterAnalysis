@@ -1,3 +1,0 @@
-FAIL: Images are visibly different
-715051 pixels are different
-

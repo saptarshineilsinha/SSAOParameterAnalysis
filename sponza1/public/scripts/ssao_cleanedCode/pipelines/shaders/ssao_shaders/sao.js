@@ -61,7 +61,7 @@ XML3D.shaders.register("sao", {
         "float vv = dot(v, v);",
         "float vn = dot(v, normalVS);",
 
-        "#if VARIATION == 0",
+        "#if VARIATION == 1",
         "return float(vv < radius2) * (max((vn-bias_sao) / (epsilon_sao + vv), 0.0))*radius2*0.6;",
 
         "#elif VARIATION == 1 ",

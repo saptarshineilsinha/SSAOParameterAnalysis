@@ -231,7 +231,7 @@
         var img = new Image();
         img.src = canvas.toDataURL();
         img.onload = function () {
-            var formData = {frame: algorithm + parameter, data: img.src};
+            var formData = {frame: algorithm + 'bias3SAO_' + parameter, data: img.src};
             $.ajax({
                 url: 'http://localhost:8080',
                 data: formData,
@@ -253,7 +253,6 @@
     }
 
     window.addEventListener("load", function () {
-        window.ssao_type = "sao";
         var xml3dElement = document.getElementById("Scene");
         xml3dElement.addEventListener("load", function () {
             var renderInterface = xml3dElement.getRenderInterface();
@@ -262,20 +261,46 @@
             } else {
                 window.renderNormal = "render-normal";
             }
-            window.radius_sao = 4.0;
-            xml3dElement.addEventListener("framedrawn", function c() {
-                if (window.radius_sao != 4.0) {
-                    readBackFrameBuffer(xml3dElement, renderInterface, window.ssao_type, window.radius_sao);
-                }
-                if (window.radius_sao < 4.2) {
-                    setRenderPipeline(renderInterface);
-                    var a=window.radius_sao+0.1;
-                    a= a.toFixed(2);
-                    window.radius_sao = parseFloat(a);
-                    renderInterface.context.requestRedraw();
-                }
 
-            });
+// The best parameters for the a specific algorithm found using automatic analysis
+
+//habo
+
+//            window.radius_hbao=0.543;
+//            window.angleBias=0.13;
+// alchemy
+
+//            window.radius_alchemy = 0.668344;
+//            window.alchemy_beta = 0.0001;
+//            window.alchemy_sigma = 0.3;
+// xml3d_original
+
+//            window.radius_ssao = 0.28;
+//            window.uscale = 0.64;
+//            window.bias = 0.12;
+//            window.intensity = 1.086;
+//sao
+            window.radius_sao = 10.41;
+            window.bias_sao = 0.11;
+            window.intensity_sao = 1.02;
+            setRenderPipeline(renderInterface);
+
+//            uncomment this line and set the parameter,step size and upper bound for automatic analysis
+
+//            var stepSize=0.01;
+//            var upperBound=0.02;
+//            xml3dElement.addEventListener("framedrawn", function c() {
+//                if (window.bias_sao !=stepSize) {
+//                    readBackFrameBuffer(xml3dElement, renderInterface, window.ssao_type, window.bias_sao);
+//                }
+//                if (window.bias_sao < upperBound) {
+//                    setRenderPipeline(renderInterface);
+//                    var currentParameterValue = window.bias_sao + stepSize;
+//                    currentParameterValue = currentParameterValue.toFixed(2);
+//                    window.bias_sao = parseFloat(currentParameterValue);
+//                    renderInterface.context.requestRedraw();
+//                }
+//            });
         });
     });
 })(XML3D.webgl);

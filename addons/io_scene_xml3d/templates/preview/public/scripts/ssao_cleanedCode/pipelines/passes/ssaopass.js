@@ -118,7 +118,9 @@
                 "gDisplace",
                 "intensity",
                 "radius_sao",
-                "worldPosition"
+                "worldPosition",
+                "intensity_sao",
+                "bias_sao"
             ];
 
             return function (scene) {
@@ -174,8 +176,10 @@
                 uniforms["intensity"] = window.intensity_gauss;
 
 //                sao parameters
-                uniforms["epsilon_sao"] = 0.0001;
+                uniforms["epsilon_sao"] = 0.01;
                 uniforms["radius_sao"] =window.radius_sao;
+                uniforms["bias_sao"] =window.bias_sao;
+                uniforms["intensity_sao"] =window.intensity_sao;
 
                 program.setSystemUniformVariables(uniformNames, uniforms);
                 program.unbind();

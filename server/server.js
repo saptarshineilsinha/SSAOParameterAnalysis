@@ -24,11 +24,11 @@ http.createServer(function (request, response) {
                 fs.mkdirSync(dir);
             }
 
-            var dir1 = 'PerceptualImageDiff/' + values[0]+'/pixelDifference';
+            var dir1 = 'PerceptualImageDiff/' + values[0] + '/pixelDifference';
             if (!fs.existsSync(dir1)) {
                 fs.mkdirSync(dir1);
             }
-            var dir2 = 'PerceptualImageDiff/' + values[0]+'/ssaoResult';
+            var dir2 = 'PerceptualImageDiff/' + values[0] + '/ssaoResult';
             if (!fs.existsSync(dir2)) {
                 fs.mkdirSync(dir2);
             }
@@ -42,7 +42,7 @@ http.createServer(function (request, response) {
                     console.log('stderr: ' + stderr);
                     if (error !== null) {
                         console.log('exec error: ' + error);
-                        //readFiles(values[0]+'/pixelDifference',values[0],1);
+                        readFiles(values[0] + '/pixelDifference', values[0]);
                     }
                 });
 
@@ -57,8 +57,32 @@ http.createServer(function (request, response) {
     response.end();
 }).listen(8080, "localhost");
 
-function readFiles(filePath,resultPath,a) {
-    var j=a;
+function readFile(filePath, files, i, workbook, resultPath) {
+    fs.readFile('PerceptualImageDiff/' + filePath + '/' + files[i], 'utf8', function (err, contents) {
+        if (contents.length !== 0) {
+            var pixels = [];
+            var pixel = contents.toString().match(/\d+/)[0];
+            pixels.push(pixel);
+            var sheet = workbook.addWorksheet("My Sheet");
+            var worksheet = workbook.getWorksheet("My Sheet");
+            worksheet.columns = [
+                { header: "Algorithm", key: "id", width: 30 },
+                { header: "Difference in Pixels", key: "name", width: 32 }
+            ];
+            if (err) {
+                throw err;
+            }
+            console.log(files[i], pixel);
+            worksheet.addRow({id: files[i], name: pixel});
+
+            workbook.csv.writeFile('PerceptualImageDiff/' + resultPath + '/FinalResult.csv')
+                .then(function () {
+                    console.log("row written...");
+                });
+        }
+    });
+}
+function readFiles(filePath, resultPath) {
     var files = fs.readdirSync('PerceptualImageDiff/' + filePath + '/');
     var workbook = new Excel.Workbook();
     String.prototype.endsWith = function (suffix) {
@@ -66,27 +90,10 @@ function readFiles(filePath,resultPath,a) {
     };
     for (var i in files) {
         if (files[i].toString().endsWith('.txt')) {
-            fs.readFile('PerceptualImageDiff/' + filePath + '/' + files[i], 'utf8', function (err, contents) {
-                if (contents.length !== 0) {
-                    var pixel = contents.toString().match(/\d+/)[0];
-                    var sheet = workbook.addWorksheet("My Sheet");
-                    var worksheet = workbook.getWorksheet("My Sheet");
-                    worksheet.columns = [
-                        { header: "Algorithm", key: "id", width: 30 },
-                        { header: "Difference in Pixels", key: "name", width: 32 }
-                    ];
-                    console.log(files[j-1], pixel);
-                    worksheet.addRow({id: files[j-1], name: pixel});
-                    j++;
-
-                    workbook.csv.writeFile('PerceptualImageDiff/' + resultPath + '/FinalResult.csv')
-                        .then(function () {
-                            console.log("row written...");
-                        });
-                }
-            });
+            readFile(filePath, files, i, workbook, resultPath);
         }
     }
 }
+
 
 
