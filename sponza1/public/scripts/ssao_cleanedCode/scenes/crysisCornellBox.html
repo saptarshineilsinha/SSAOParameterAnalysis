@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="all" href="../../ssao_cleanedCode/utils/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="../../ssao_cleanedCode/utils/slider.css"/>
+    <script type="text/javascript" src="../../ssao_cleanedCode/utils/jquery.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/utils/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/xml3D/xml3d-4.8.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/xml3D/camera.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/boxBlurShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/gaussianBlurShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/BilateralFilter.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/boxBlurPass.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/GaussianBlurPassX.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/GaussianBlurPassY.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/bialteralBlurPass.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/DepthShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/renderNormalViewSpace.js"></script>
+
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/crysis.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/passes/ssaopass.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".slider").slider({
+                orientation: "horizontal",
+                range: "min"
+            });
+            $("#slider_radius_starcraft").slider({min: 0.0, max: 5.0, value:3.5, step: 0.01,
+                slide: function (event, ui) {
+                    window.starcraft_radius = ui.value;
+                    $('#value_radius_starcraft').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            $("#slider_falloff").slider({min: 0.0, max: 0.1, value: 0.01, step: 0.001,
+                slide: function (event, ui) {
+                    window.falloff = ui.value;
+                    $('#value_falloff').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            window.starcraft_radius=$('#slider_radius_starcraft').slider("value");
+            window.falloff = $('#slider_falloff').slider("value");
+            $('#value_radius_starcraft').text($('#slider_radius_starcraft').slider("value"));
+            $('#value_falloff').text($('#slider_falloff').slider("value"));
+        });
+        window.ssao_type = "crysis";
+        window.renderNormal="render-normal";
+        window.onlyAO=false;
+    </script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/pipelineEnableOnlyAO.js"></script>
+    <title>StarCraftII SSAO Implementation of Cornell box</title>
+</head>
+<body>
+
+<xml3d id="myXML3D" class="xml3d" activeView="#camera" style="width: 100vw;height:100vh;background-color:#000000;">
+    <defs>
+        <transform id="t_suzanne" translation="2.000639 -2.717503 1.668283"
+                   rotation="-0.209993 -0.920956 -0.328241 2.092716"></transform>
+        <transform id="t_small_box" translation="1.190780 -1.763727 -2.535834" rotation="0 1 0 0.46"
+                   scale="1 1.4 1"></transform>
+        <transform id="t_cornell_box" scale="3.167318 3.167318 3.167318"
+                   rotation="0.000000 0.707107 0.707107 3.141593"></transform>
+        <transform id="t_root" rotation="0 1 0 1.57"></transform>
+        <transform id="t_camera" rotation="0 -1 0 0"></transform>
+        <lightshader id="ls" script="urn:xml3d:lightshader:directional"></lightshader>
+    </defs>
+    <group id="cameraGroup" transform="#t_camera">
+        <view id="camera" position="0 0 15"></view>
+    </group>
+    <group id="root" transform="#t_root">
+        <group id="g_cornell" transform="#t_cornell_box" shader="../../ssao_cleanedCode/models/shaders.xml#cornell_shader">
+            <mesh type="triangles" src="../../ssao_cleanedCode/models/meshes.xml#cornell_box_data"></mesh>
+        </group>
+        <group id="g_small_box" transform="#t_small_box" shader="../../ssao_cleanedCode/models/shaders.xml#cornell_shader">
+            <mesh type="triangles" src="../../ssao_cleanedCode/models/meshes.xml#small_box_data"></mesh>
+        </group>
+        <group id="g_suzanne" transform="#t_suzanne" shader="../../ssao_cleanedCode/models/shaders.xml#grey_shader">
+            <mesh type="triangles" src="../../ssao_cleanedCode/models/meshes.xml#suzanne_data"></mesh>
+        </group>
+    </group>
+    <group style="transform: rotateZ(45deg)">
+        <light shader="#ls"></light>
+    </group>
+</xml3d>
+<label><b> SSAO-StarCraft II Parameters </b></label>
+<div class="controls">
+    <div class="option">
+        <label>Radius StarCraft II</label>
+        <div id="slider_radius_starcraft" class="slider">
+        </div>
+        <span id="value_radius_starcraft"></span>
+
+        <div class="option">
+        </div> <label>Falloff</label>
+        <div id="slider_falloff" class="slider"></div>
+        <span id="value_falloff"></span>
+
+    </div>
+</div>
+</body>
+</html>

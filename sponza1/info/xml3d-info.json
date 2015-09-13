@@ -1,0 +1,163 @@
+{
+    "animations": [],
+    "armatures": [],
+    "assets": [
+        {
+            "name": "assets-6.xml",
+            "size": 3530914,
+            "url": "sponza1\\assets\\assets-6.xml"
+        },
+        {
+            "name": "assets-5.xml",
+            "size": 4184766,
+            "url": "sponza1\\assets\\assets-5.xml"
+        },
+        {
+            "name": "assets-4.xml",
+            "size": 3584076,
+            "url": "sponza1\\assets\\assets-4.xml"
+        },
+        {
+            "name": "assets-7.xml",
+            "size": 2786637,
+            "url": "sponza1\\assets\\assets-7.xml"
+        },
+        {
+            "name": "assets-3.xml",
+            "size": 3672389,
+            "url": "sponza1\\assets\\assets-3.xml"
+        },
+        {
+            "name": "assets-1.xml",
+            "size": 3862113,
+            "url": "sponza1\\assets\\assets-1.xml"
+        },
+        {
+            "name": "assets-0.xml",
+            "size": 2655149,
+            "url": "sponza1\\assets\\assets-0.xml"
+        },
+        {
+            "name": "assets-2.xml",
+            "size": 5171258,
+            "url": "sponza1\\assets\\assets-2.xml"
+        }
+    ],
+    "groups": 384,
+    "lights": 1,
+    "materials": [
+        {
+            "name": "shared-materials.xml",
+            "size": 19434
+        }
+    ],
+    "meshes": [],
+    "scene": {
+        "name": "index.html",
+        "size": 115905
+    },
+    "textures": [
+        {
+            "name": "sponza_column_b_diff_tga_001.png",
+            "size": 2808050
+        },
+        {
+            "name": "sponza_flagpole_diff_tga_001.png",
+            "size": 1990834
+        },
+        {
+            "name": "sponza_column_c_diff_tga_001.png",
+            "size": 2798415
+        },
+        {
+            "name": "sponza_arch_diff_tga_001.png",
+            "size": 1979274
+        },
+        {
+            "name": "vase_hanging_tga_001.png",
+            "size": 1643159
+        },
+        {
+            "name": "sponza_curtain_diff_tga_001.png",
+            "size": 10966427
+        },
+        {
+            "name": "sponza_ceiling_a_diff_tga_001.png",
+            "size": 2470155
+        },
+        {
+            "name": "chain_texture_tga_001.png",
+            "size": 532395
+        },
+        {
+            "name": "spnza_bricks_a_diff_tga_001.png",
+            "size": 2375859
+        },
+        {
+            "name": "sponza_column_a_diff_tga_001.png",
+            "size": 2422819
+        },
+        {
+            "name": "vase_dif_tga_001.png",
+            "size": 2728904
+        },
+        {
+            "name": "sponza_details_diff_tga_001.png",
+            "size": 2161581
+        },
+        {
+            "name": "sponza_thorn_diff_tga_001.png",
+            "size": 735383
+        },
+        {
+            "name": "vase_plant_tga_001.png",
+            "size": 1034910
+        },
+        {
+            "name": "vase_round_tga_001.png",
+            "size": 2521117
+        },
+        {
+            "name": "sponza_curtain_green_diff_tga_001.png",
+            "size": 10305857
+        },
+        {
+            "name": "sponza_fabric_green_diff_tga_001.png",
+            "size": 2576332
+        },
+        {
+            "name": "background_tga_001.png",
+            "size": 1858556
+        },
+        {
+            "name": "lion_tga_001.png",
+            "size": 2353527
+        },
+        {
+            "name": "sponza_fabric_blue_diff_tga_001.png",
+            "size": 2632555
+        },
+        {
+            "name": "sponza_roof_diff_tga_001.png",
+            "size": 3275077
+        },
+        {
+            "name": "sponza_floor_a_diff_tga_001.png",
+            "size": 2519102
+        },
+        {
+            "name": "gi_flag_tga_001.png",
+            "size": 38801
+        },
+        {
+            "name": "sponza_curtain_blue_diff_tga_001.png",
+            "size": 10370485
+        },
+        {
+            "name": "sponza_fabric_diff_tga_001.png",
+            "size": 2639159
+        }
+    ],
+    "views": 1,
+    "warnings": []
+}

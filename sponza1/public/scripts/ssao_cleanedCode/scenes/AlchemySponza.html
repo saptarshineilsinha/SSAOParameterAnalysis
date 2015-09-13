@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="all" href="../../ssao_cleanedCode/utils/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="../../ssao_cleanedCode/utils/slider.css"/>
+    <script type="text/javascript" src="../../ssao_cleanedCode/utils/jquery.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/utils/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/xml3D/xml3d-4.8.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/xml3D/camera.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/boxBlurShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/gaussianBlurShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/BilateralFilter.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/boxBlurPass.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/GaussianBlurPassX.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/bialteralBlurPass.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/GaussianBlurPassY.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/DepthShader.js"></script>
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/alchemy.js"></script>
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/ssao_xml3D.js"></script>
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/sao.js"></script>
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/hbao.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/passes/ssaopass.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".slider").slider({
+                orientation: "horizontal",
+                range: "min"
+            });
+            $("#slider_alchemy_radius").slider({min: 0.0, max: 0.5, value: 0.2, step: 0.02,
+                slide: function (event, ui) {
+                    window.radius_alchemy = ui.value;
+                    $('#value_alchemy_radius').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            $("#slider_beta").slider({min: 0.0, max: 0.001, value: 0.0001, step: 0.0001,
+                slide: function (event, ui) {
+                    window.alchemy_beta = ui.value;
+                    $('#value_beta').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            $("#slider_sigma").slider({min: 0.0, max: 3.0, value: 0.3, step: 0.1,
+                slide: function (event, ui) {
+                    window.alchemy_sigma = ui.value;
+                    $('#value_sigma').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            window.radius_alchemy = $('#slider_alchemy_radius').slider("value");
+            window.alchemy_beta = $('#slider_beta').slider("value");
+            window.alchemy_sigma = $('#slider_sigma').slider("value");
+            $('#value_alchemy_radius').text($('#slider_alchemy_radius').slider("value"));
+            $('#value_beta').text($('#slider_beta').slider("value"));
+            $('#value_sigma').text($('#slider_sigma').slider("value"));
+        });
+        window.ssao_type = "alchemy-ssao";
+        window.renderNormal="render-normal";
+        window.onlyAO=true;
+
+    </script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/pipelineEnableOnlyAO.js"></script>
+    <title>Alchemy SSAO Implementation of Cornell box</title>
+</head>
+<body>
+
+<xml3d id="myXML3D" class="xml3d" activeView="#camera" style="width: 100vw;height:100vh;background-color:#000000;">
+    <defs>
+        <transform id="t_suzanne" translation="2.000639 -2.717503 1.668283"
+                   rotation="-0.209993 -0.920956 -0.328241 2.092716"></transform>
+        <transform id="t_small_box" translation="1.190780 -1.763727 -2.535834" rotation="0 1 0 0.46"
+                   scale="1 1.4 1"></transform>
+        <transform id="t_cornell_box" scale="3.167318 3.167318 3.167318"
+                   rotation="0.000000 0.707107 0.707107 3.141593"></transform>
+        <transform id="t_root" rotation="0 1 0 1.57"></transform>
+        <transform id="t_light" translation="0 10 0"></transform>
+        <lightshader id="ls" script="urn:xml3d:lightshader:point">
+            <float3 name="attenuation">1 0 0</float3>
+
+        </lightshader>
+    </defs>
+    <group id="cameraGroup">
+        <view id="camera" position="0 0 0"></view>
+    </group>
+    <group id="root" transform="#t_root">
+        <model src="../../ssao_cleanedCode/models/sponza.xml#sponza"></model>
+    </group>
+    <group transform="#t_light">
+        <light shader="#ls"></light>
+        <light shader="#ls"></light>
+    </group>
+</xml3d>
+<label><b> SSAO-ALCHEMY Parameters </b></label>
+<div class="controls">
+    <div class="option">
+        <label>Radius Alchemy</label>
+        <div id="slider_alchemy_radius" class="slider">
+        </div>
+        <span id="value_alchemy_radius"></span>
+        <div class="option">
+        </div> <label>Beta</label>
+        <div id="slider_beta" class="slider">
+        </div>
+        <span id="value_beta"></span>
+        <div class="option">
+        </div> <label>Sigma</label>
+        <div id="slider_sigma" class="slider"></div>
+        <span id="value_sigma"></span>
+    </div>
+</div>
+
+</body>
+</html>

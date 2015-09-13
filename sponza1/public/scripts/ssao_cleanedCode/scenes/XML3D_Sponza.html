@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="all" href="../../ssao_cleanedCode/utils/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="../../ssao_cleanedCode/utils/slider.css"/>
+    <script type="text/javascript" src="../../ssao_cleanedCode/utils/jquery.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/utils/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/xml3D/xml3d-4.8.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/xml3D/camera.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/boxBlurShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/gaussianBlurShader.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/BilateralFilter.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/boxBlurPass.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/GaussianBlurPassX.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/GaussianBlurPassY.js"></script>
+    <script type="text/javascript" src="../pipelines/passes/bialteralBlurPass.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/shaders/DepthShader.js"></script>
+    <script type="text/javascript" src="../pipelines/shaders/ssao_shaders/ssao_xml3D.js"></script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/passes/ssaopass.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".slider").slider({
+                orientation: "horizontal",
+                range: "min"
+            });
+            $("#slider_radius_xml3d").slider({min: 0.0, max: 10.0, value: 0.4, step: 0.2,
+                slide: function (event, ui) {
+                    window.radius_ssao = ui.value;
+                    $('#value_radius_ssao').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            $("#slider_uScale").slider({min: 0.0, max: 10.0, value: 1.5, step: 0.5,
+                slide: function (event, ui) {
+                    window.uscale = ui.value;
+                    $('#value_uScale').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            $("#slider_uBias").slider({min: 0.0, max: 1.0, value: 0.23, step: 0.01,
+                slide: function (event, ui) {
+                    window.bias = ui.value;
+                    $('#value_uBias').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            $("#slider_uIntensity").slider({min: 0.0, max: 10.0, value: 2.0, step: 0.5,
+                slide: function (event, ui) {
+                    window.intensity = ui.value;
+                    $('#value_uIntensity').text(ui.value);
+                    var xml3dElement1 = document.getElementById("myXML3D");
+                    xml3dElement1.getRenderInterface().context.requestRedraw();
+                }});
+            window.radius_ssao = $('#slider_radius_xml3d').slider("value");
+            window.uscale = $('#slider_uScale').slider("value");
+            window.bias = $('#slider_uBias').slider("value");
+            window.intensity = $('#slider_uIntensity').slider("value");
+            $('#value_radius_ssao').text($('#slider_radius_xml3d').slider("value"));
+            $('#value_uScale').text($('#slider_uScale').slider("value"));
+            $('#value_uBias').text($('#slider_uBias').slider("value"));
+            $('#value_uIntensity').text($('#slider_uIntensity').slider("value"));
+            window.ssao_type = "ssaoXml3D";
+            window.renderNormal="render-normal";
+        });
+        window.onlyAO=false;
+    </script>
+    <script type="text/javascript" src="../../ssao_cleanedCode/pipelines/pipelineEnableOnlyAO.js"></script>
+
+    <title>Simple SSAO Implementation of Sponza Model</title>
+</head>
+<body>
+
+<xml3d id="myXML3D" class="xml3d" activeView="#camera" style="width: 100vw;height:100vh;background-color:#000000;">
+    <defs>
+    <transform id="t_suzanne" translation="2.000639 -2.717503 1.668283"
+    rotation="-0.209993 -0.920956 -0.328241 2.092716"></transform>
+    <transform id="t_small_box" translation="1.190780 -1.763727 -2.535834" rotation="0 1 0 0.46"
+    scale="1 1.4 1"></transform>
+    <transform id="t_cornell_box" scale="3.167318 3.167318 3.167318"
+    rotation="0.000000 0.707107 0.707107 3.141593"></transform>
+    <transform id="t_root" rotation="0 1 0 1.57"></transform>
+    <transform id="t_light" translation="0 10 0"></transform>
+    <lightshader id="ls" script="urn:xml3d:lightshader:point">
+    <float3 name="attenuation">1 0 0</float3>
+
+    </lightshader>
+    </defs>
+    <group id="cameraGroup">
+    <view id="camera" position="0 0 0"></view>
+    </group>
+    <group id="root" transform="#t_root">
+    <model src="../../ssao_cleanedCode/models/sponza.xml#sponza"></model>
+    </group>
+    <group transform="#t_light">
+    <light shader="#ls"></light>
+    <light shader="#ls"></light>
+    </group>
+</xml3d>
+<div class="controls">
+    <div class="option">
+        <label>Radius SSAO-XML3D</label>
+
+        <div id="slider_radius_xml3d" class="slider">
+        </div>
+        <span id="value_radius_ssao"></span>
+
+        <div class="option">
+        </div>
+        <label>Scale</label>
+
+        <div id="slider_uScale" class="slider"></div>
+        <span id="value_uScale"></span>
+
+        <div class="option">
+        </div>
+        <label>Bias</label>
+
+        <div id="slider_uBias" class="slider">
+        </div>
+        <span id="value_uBias"></span>
+
+        <div class="option">
+        </div>
+        <label>Intensity-XML3D-SSAO</label>
+
+        <div id="slider_uIntensity" class="slider"></div>
+        <span id="value_uIntensity"></span>
+
+    </div>
+</div>
+</body>
+</html>
